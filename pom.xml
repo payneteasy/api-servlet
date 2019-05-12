@@ -10,7 +10,7 @@
 
     <groupId>com.payneteasy</groupId>
     <artifactId>api-servlet</artifactId>
-    <version>1.0-1-SNAPSHOT</version>
+    <version>1.0-1</version>
 
     <name>api-servlet ${project.version}</name>
 
@@ -22,7 +22,7 @@
         <connection>scm:git:git@github.com:payneteasy/api-servlet.git</connection>
         <developerConnection>scm:git:git@github.com:payneteasy/api-servlet.git</developerConnection>
         <url>https://github.com/payneteasy/api-servlet</url>
-      <tag>HEAD</tag>
+      <tag>api-servlet-1.0-1</tag>
   </scm>
 
     <developers>
