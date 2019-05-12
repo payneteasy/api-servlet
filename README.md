@@ -1,15 +1,14 @@
-[![maven](https://maven-badges.herokuapp.com/maven-central/com.payneteasy/api-servlet/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.payneteasy/api-servlet)
-[![Build Status](https://travis-ci.org/evsinev/api-servlet.svg?branch=master)](https://travis-ci.org/evsinev/api-servlet)
-[![CircleCI](https://circleci.com/gh/evsinev/api-servlet.svg?style=svg)](https://circleci.com/gh/evsinev/api-servlet)
+[![Maven Central](https://img.shields.io/maven-central/v/com.payneteasy/api-servlet.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.payneteasy%22%20AND%20a:%22api-servlet%22)
+[![Build Status](https://travis-ci.org/payneteasy/api-servlet.svg?branch=master)](https://travis-ci.org/payneteasy/api-servlet)
+[![CircleCI](https://circleci.com/gh/payneteasy/api-servlet.svg?style=svg)](https://circleci.com/gh/payneteasy/api-servlet)
 
-Parse startup parameters
+Simple API Servlet for JSON
 ==========================
 
 
 ## Features
 
-* supported types: amount, date, time, text, BCD, bytes
-* thread safe (provides immutable container BerTlv)
+* supported: jackson
 
 ## Setup with dependency managers
 
