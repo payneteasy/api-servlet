@@ -35,7 +35,7 @@ How to use
 Create a service class
 
 ```java
-public interface ProjectService {
+public class ProjectService {
 
     public User getUser(VoidRequest aRequest) {
         return new User(1, "Test");
