@@ -49,6 +49,8 @@ Create servlet mapping
     Server                jetty   = new Server(8080);
     ServletContextHandler context = new ServletContextHandler(jetty, "/api", ServletContextHandler.NO_SESSIONS);
 
+    ProjectService projectService = new ProjectService();
+    
     context.addServlet(new ServletHolder(new JacksonApiServlet<>(projectService::getUser, VoidRequest.class, User.class)), "/user/*");
 ```
 
