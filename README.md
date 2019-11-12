@@ -9,7 +9,7 @@ Simple API Servlet for JSON
 
 ## Features
 
-* supported: jackson
+* supported: jackson, gson
 
 ## Setup with dependency managers
 
@@ -19,14 +19,14 @@ Simple API Servlet for JSON
 <dependency>
   <groupId>com.payneteasy</groupId>
   <artifactId>api-servlet</artifactId>
-  <version>$VERSION</version>
+  <version>$VERSION</version> <!-- see https://github.com/payneteasy/api-servlet/releases -->
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-compile 'com.payneteasy:api-servlet:$VERSION'
+compile 'com.payneteasy:api-servlet:$VERSION' // see https://github.com/payneteasy/api-servlet/releases 
 ```
 
 How to use
