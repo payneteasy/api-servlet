@@ -35,10 +35,12 @@ How to use
 Create a service class
 
 ```java
-public class ProjectService {
+public class HelloServiceSample {
 
-    public User getUser(VoidRequest aRequest) {
-        return new User(1, "Test");
+    public ResponseMessageSample sayHello(RequestMessageSample aName) {
+        ResponseMessageSample response = new ResponseMessageSample();
+        response.text = "Hello " + aName.name;
+        return response;
     }
 }
 ```
@@ -48,10 +50,10 @@ Create servlet mapping
 ```java
     Server                jetty   = new Server(8080);
     ServletContextHandler context = new ServletContextHandler(jetty, "/api", ServletContextHandler.NO_SESSIONS);
-
-    ProjectService projectService = new ProjectService();
+    ObjectMapper          mapper  = new ObjectMapper();
+    HelloServiceSample service    = new HelloServiceSample();
     
-    context.addServlet(new ServletHolder(new JacksonApiServlet<>(projectService::getUser, VoidRequest.class, User.class)), "/user/*");
+    context.addServlet(new ServletHolder(new JacksonApiServlet<>(service::sayHello, RequestMessageSample.class, ResponseMessageSample.class, mapper)), "/user/*");
 ```
 
 
