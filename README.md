@@ -1,5 +1,5 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.payneteasy/api-servlet.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.payneteasy%22%20AND%20a:%22api-servlet%22)
-[![Build Status](https://travis-ci.org/payneteasy/api-servlet.svg?branch=master)](https://travis-ci.org/payneteasy/api-servlet)
+![Github Actions Status](https://github.com/payneteasy/api-servlet/workflows/Java%20CI/badge.svg)
 [![CircleCI](https://circleci.com/gh/payneteasy/api-servlet.svg?style=svg)](https://circleci.com/gh/payneteasy/api-servlet)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.payneteasy%3Aapi-servlet&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.payneteasy%3Aapi-servlet)
 
