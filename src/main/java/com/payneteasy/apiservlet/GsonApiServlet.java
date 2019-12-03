@@ -17,9 +17,7 @@ public class GsonApiServlet<I, O> extends HttpServlet {
 
     private final IApiCall<I, O> apiCall;
     private final Class<I>       requestClass;
-
-
-    private final Gson gson;
+    private final Gson           gson;
 
     public GsonApiServlet(IApiCall<I, O> aApiCall, Class<I> aRequestClass, Gson aGson) {
         apiCall = aApiCall;
@@ -28,18 +26,37 @@ public class GsonApiServlet<I, O> extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest aRequest, HttpServletResponse aResponse) throws IOException {
-        String json    = toJsonString(aRequest.getReader());
-        I      request = gson.fromJson(json, requestClass);
+    protected void doPost(HttpServletRequest aRequest, HttpServletResponse aResponse) {
+        try {
+            String json    = toJsonString(aRequest.getReader());
+            I      request = gson.fromJson(json, requestClass);
 
-        LOG.debug("Got {} \n{}", aRequest.getRequestURI(), json);
+            LOG.debug("Got {} \n{}", aRequest.getRequestURI(), json);
 
-        processRequest(aRequest, aResponse, request);
+            processRequest(aRequest, aResponse, request);
+        } catch (IOException e) {
+            sendError(aResponse, e);
+        }
+    }
+
+    private void sendError(HttpServletResponse aResponse, IOException e) {
+        String errorId = UUID.randomUUID().toString();
+        LOG.error("{}: IO error", errorId, e);
+        aResponse.setStatus(500);
+        try {
+            aResponse.getWriter().write("{'error' : 'IO error " + errorId + "'}");
+        } catch (IOException e1) {
+            LOG.error("Cannot write error to servlet", e);
+        }
     }
 
     @Override
-    protected void doGet(HttpServletRequest aRequest, HttpServletResponse aResponse) throws IOException {
-        processRequest(aRequest, aResponse, null);
+    protected void doGet(HttpServletRequest aRequest, HttpServletResponse aResponse) {
+        try {
+            processRequest(aRequest, aResponse, null);
+        } catch (IOException e) {
+            sendError(aResponse, e);
+        }
     }
 
     private void processRequest(HttpServletRequest aRequest, HttpServletResponse aResponse, I request) throws IOException {
