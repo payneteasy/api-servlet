@@ -45,7 +45,7 @@ public class HelloServiceSample {
 }
 ```
 
-Create servlet mapping
+### Create servlet mapping with Jackson
 
 ```java
     Server                jetty   = new Server(8080);
@@ -54,6 +54,19 @@ Create servlet mapping
     HelloServiceSample service    = new HelloServiceSample();
     
     context.addServlet(new ServletHolder(new JacksonApiServlet<>(service::sayHello, RequestMessageSample.class, ResponseMessageSample.class, mapper)), "/user/*");
+```
+
+### Create with Gson
+
+```java
+    Server                  jetty   = new Server(8080);
+    ServletContextHandler   context = new ServletContextHandler(jetty, "/api", ServletContextHandler.NO_SESSIONS);
+    Gson                    gson    = new GsonBuilder().setPrettyPrinting().create();
+    GsonJettyContextHandler handler = new GsonJettyContextHandler(context, gson);
+
+    HelloServiceSample      service = new HelloServiceSample();
+
+    handler.addApi("/user/*", service::sayHello, RequestMessageSample.class);
 ```
 
 
