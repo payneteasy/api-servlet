@@ -9,68 +9,59 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.UUID;
 
 public class GsonApiServlet<I, O> extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(GsonApiServlet.class);
 
-    private final IApiCall<I, O> apiCall;
-    private final Class<I>       requestClass;
-    private final Gson           gson;
+    private final IApiCall<I, O>    apiCall;
+    private final Class<I>          requestClass;
+    private final Gson              gson;
+    private final boolean           isVoidRequest;
+    private final IExceptionHandler exceptionHandler;
 
-    public GsonApiServlet(IApiCall<I, O> aApiCall, Class<I> aRequestClass, Gson aGson) {
+
+    public GsonApiServlet(IApiCall<I, O> aApiCall, Class<I> aRequestClass, Gson aGson, IExceptionHandler aExceptionHandler) {
         apiCall = aApiCall;
         gson = aGson;
         requestClass = aRequestClass;
+        isVoidRequest = VoidRequest.class.equals(aRequestClass);
+        exceptionHandler = aExceptionHandler;
     }
 
     @Override
     protected void doPost(HttpServletRequest aRequest, HttpServletResponse aResponse) {
         try {
             String json    = toJsonString(aRequest.getReader());
-            I      request = gson.fromJson(json, requestClass);
+            //noinspection unchecked
+            I      request = isVoidRequest ? (I)VoidRequest.VOID_REQUEST : gson.fromJson(json, requestClass);
 
-            LOG.debug("Got {} \n{}", aRequest.getRequestURI(), json);
+            LOG.debug("Incoming POST message {} \n{}", aRequest.getRequestURI(), json);
 
             processRequest(aRequest, aResponse, request);
-        } catch (IOException e) {
-            sendError(aResponse, e);
-        }
-    }
 
-    private void sendError(HttpServletResponse aResponse, IOException e) {
-        String errorId = UUID.randomUUID().toString();
-        LOG.error("{}: IO error", errorId, e);
-        aResponse.setStatus(500);
-        try {
-            aResponse.getWriter().write("{'error' : 'IO error " + errorId + "'}");
-        } catch (IOException e1) {
-            LOG.error("Cannot write error to servlet", e);
+        } catch (Exception e) {
+            exceptionHandler.handleException(e, new ExceptionContextImpl(aResponse));
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest aRequest, HttpServletResponse aResponse) {
         try {
+            LOG.debug("Incoming GET message {}", aRequest.getRequestURI());
             processRequest(aRequest, aResponse, null);
-        } catch (IOException e) {
-            sendError(aResponse, e);
+        } catch (Exception e) {
+            exceptionHandler.handleException(e, new ExceptionContextImpl(aResponse));
         }
     }
 
-    private void processRequest(HttpServletRequest aRequest, HttpServletResponse aResponse, I request) throws IOException {
-        try {
-            O response = apiCall.exec(request);
+    private void processRequest(HttpServletRequest aRequest, HttpServletResponse aResponse, I request) throws Exception {
+        O      response     = apiCall.exec(request);
+        String jsonResponse = gson.toJson(response);
 
-            aResponse.setContentType("application/json");
-            gson.toJson(response, aResponse.getWriter());
-        } catch (Exception e) {
-            String id = UUID.randomUUID().toString();
-            LOG.error("{}: Cannot process {}", aRequest.getRequestURI(), id, e);
-            aResponse.setHeader("UNIQUE-ERROR-ID", id);
-            aResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+        LOG.debug("Response message {} is \n{}", aRequest.getRequestURI(), jsonResponse);
+        aResponse.setContentType("application/json");
+        aResponse.getWriter().write(jsonResponse);
     }
 
     private String toJsonString(BufferedReader aRequestReader) throws IOException {

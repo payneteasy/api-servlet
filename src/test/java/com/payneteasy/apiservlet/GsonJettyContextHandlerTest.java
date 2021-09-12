@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class GsonJettyContextHandlerTest {
 
     private final ServletContextHandler   context = new ServletContextHandler();
-    private final GsonJettyContextHandler handler = new GsonJettyContextHandler(context, new Gson());
+    private final GsonJettyContextHandler handler = new GsonJettyContextHandler(context, new Gson(), (aException, aContext) -> aException.printStackTrace());
 
     @Test
     public void add() {

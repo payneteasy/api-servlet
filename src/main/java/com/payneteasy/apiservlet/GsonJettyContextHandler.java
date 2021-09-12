@@ -14,10 +14,12 @@ public class GsonJettyContextHandler {
 
     private final ServletContextHandler context;
     private final Gson                  gson;
+    private final IExceptionHandler     exceptionHandler;
 
-    public GsonJettyContextHandler(ServletContextHandler aContext, Gson aGson) {
+    public GsonJettyContextHandler(ServletContextHandler aContext, Gson aGson, IExceptionHandler aHandler) {
         context = aContext;
         gson = aGson;
+        exceptionHandler = aHandler;
     }
 
     public void add(String path, HttpServlet servlet) {
@@ -26,7 +28,7 @@ public class GsonJettyContextHandler {
     }
 
     public <I,O> void addApi(String path, IApiCall<I, O> aApiCall, Class<I> aRequestClass) {
-        add(path, new GsonApiServlet<>(aApiCall, aRequestClass, gson));
+        add(path, new GsonApiServlet<>(aApiCall, aRequestClass, gson, exceptionHandler));
     }
 
 }
