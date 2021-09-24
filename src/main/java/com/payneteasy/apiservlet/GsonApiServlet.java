@@ -32,9 +32,11 @@ public class GsonApiServlet<I, O> extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest aRequest, HttpServletResponse aResponse) {
         try {
-            String json    = toJsonString(aRequest.getReader());
+            String json = toJsonString(aRequest.getReader());
+            LOG.debug("Incoming json to {} is {}", aRequest.getRequestURI(), json);
+
             //noinspection unchecked
-            I      request = isVoidRequest ? (I)VoidRequest.VOID_REQUEST : gson.fromJson(json, requestClass);
+            I request = isVoidRequest ? (I) VoidRequest.VOID_REQUEST : gson.fromJson(json, requestClass);
 
             LOG.debug("Incoming POST message {} \n{}", aRequest.getRequestURI(), json);
 
