@@ -25,7 +25,7 @@ public class GsonApiServletTest {
     public void doPost() throws IOException {
         HelloServiceSample service = new HelloServiceSample();
         Gson               gson    = new GsonBuilder().setPrettyPrinting().create();
-        GsonApiServlet     servlet = new GsonApiServlet<>(service::sayHello, RequestMessageSample.class, gson, (aException, aContext) -> aException.printStackTrace());
+        GsonApiServlet     servlet = new GsonApiServlet<>(service::sayHello, RequestMessageSample.class, gson, (aException, aContext) -> aException.printStackTrace(), new TestRequestValidator());
 
         HttpServletRequest  servletRequest  = mock(HttpServletRequest.class);
         HttpServletResponse servletResponse = mock(HttpServletResponse.class);

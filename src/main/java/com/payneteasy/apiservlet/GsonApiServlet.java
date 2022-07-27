@@ -19,14 +19,15 @@ public class GsonApiServlet<I, O> extends HttpServlet {
     private final Gson              gson;
     private final boolean           isVoidRequest;
     private final IExceptionHandler exceptionHandler;
+    private final IRequestValidator requestValidator;
 
-
-    public GsonApiServlet(IApiCall<I, O> aApiCall, Class<I> aRequestClass, Gson aGson, IExceptionHandler aExceptionHandler) {
+    public GsonApiServlet(IApiCall<I, O> aApiCall, Class<I> aRequestClass, Gson aGson, IExceptionHandler aExceptionHandler, IRequestValidator aRequestValidator) {
         apiCall = aApiCall;
         gson = aGson;
         requestClass = aRequestClass;
         isVoidRequest = VoidRequest.class.equals(aRequestClass);
         exceptionHandler = aExceptionHandler;
+        requestValidator = aRequestValidator;
     }
 
     @Override
@@ -39,6 +40,8 @@ public class GsonApiServlet<I, O> extends HttpServlet {
             I request = isVoidRequest ? (I) VoidRequest.VOID_REQUEST : gson.fromJson(json, requestClass);
 
             LOG.debug("Incoming POST message {} \n{}", aRequest.getRequestURI(), json);
+
+            requestValidator.validateRequest(request);
 
             processRequest(aRequest, aResponse, request);
 
