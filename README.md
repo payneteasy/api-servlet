@@ -19,14 +19,14 @@ Simple API Servlet for JSON
 <dependency>
   <groupId>com.payneteasy</groupId>
   <artifactId>api-servlet</artifactId>
-  <version>1.0-3</version>
+  <version>1.0-5</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-compile 'com.payneteasy:api-servlet:1.0-3'
+compile 'com.payneteasy:api-servlet:1.0-5'
 ```
 
 How to use
