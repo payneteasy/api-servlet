@@ -41,7 +41,7 @@ public class GsonApiServlet<I, O> extends HttpServlet {
 
             LOG.debug("Incoming POST message {} \n{}", aRequest.getRequestURI(), json);
 
-            requestValidator.validateRequest(request);
+            requestValidator.validateRequest(request, requestClass);
 
             processRequest(aRequest, aResponse, request);
 
