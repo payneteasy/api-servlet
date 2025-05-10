@@ -2,8 +2,8 @@ package com.payneteasy.apiservlet;
 
 import com.google.gson.Gson;
 import com.payneteasy.apiservlet.logger.ILoggerContextFactory;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.ee8.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee8.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
